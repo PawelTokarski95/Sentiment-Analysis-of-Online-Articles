@@ -5,7 +5,7 @@ from src.ExtractData import transform_articles
 from src.Train_Data import load_finbert
 from assets import ASSETS
 
-API_KEY = '2b36b6b7ba444671965aa96e38822880'
+API_KEY = '2b........................0'
 
 app = FastAPI(title="FinBERT Sentiment API")
 
