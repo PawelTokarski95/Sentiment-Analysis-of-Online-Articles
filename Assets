@@ -1,0 +1,16 @@
+ASSETS = [
+
+    'stocks', 'bonds', 'currencies', 'treasuries', 'commodities', 'cash', 'derivatives',
+    
+    'gold', 'silver', 'oil', 'natural gas', 'copper', 'platinum', 'palladium', 'wheat', 'corn', 'soybeans',
+
+    'bitcoin', 'ethereum', 'ripple', 'litecoin', 'cardano', 'dogecoin', 'solana', 'polkadot', 'binance coin', 'chainlink',
+
+    'nasdaq', 's&p500', 'dow jones', 'ftse100', 'dax', 'nikkei225', 'hang seng', 'russell2000', 'cac40', 'ibex35',
+
+    'usd', 'eur', 'gbp', 'jpy', 'cny', 'pln', 'aud', 'cad', 'chf', 'inr',
+
+    'us treasury', 'german bonds', 'japanese government bond', 'corporate bonds', 'municipal bonds',
+
+    'real estate', 'commodities', 'private equity', 'venture capital', 'gold etf'
+]
