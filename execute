@@ -1,0 +1,46 @@
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from src.RawData import get_articles
+from src.ExtractData import transform_articles
+from src.Train_Data import load_finbert
+from assets import ASSETS
+
+API_KEY = '2b36b6b7ba444671965aa96e38822880'
+
+app = FastAPI(title="FinBERT Sentiment API")
+
+class AssetRequest(BaseModel):
+    asset: str
+
+@app.post("/sentiment/")
+def sentiment_analysis(req: AssetRequest):
+    asset = req.asset.strip().lower()
+
+    if asset not in ASSETS:
+        raise HTTPException(status_code=404, detail=f"Asset '{asset}' not found.")
+
+    articles = get_articles(API_KEY, assets=[asset])
+    df_articles = transform_articles(articles)
+
+    df_subset = df_articles[df_articles['asset'] == asset]
+    descriptions = df_subset['description'].dropna().tolist()
+
+    if not descriptions:
+        return {"asset": asset, "message": "No articles available."}
+
+    scores, labels = load_finbert(descriptions)
+
+    negative = sum(1 for lab in labels if lab == 'negative')
+    positive = sum(1 for lab in labels if lab == 'positive')
+    neutral = sum(1 for lab in labels if lab == 'neutral')
+    total = positive + negative + neutral
+
+    return {
+        "asset": asset,
+        "total_articles": total,
+        "positive": round(positive / total * 100, 1),
+        "negative": round(negative / total * 100, 1),
+        "neutral": round(neutral / total * 100, 1),
+        "scores": scores,
+        "labels": labels
+    }
