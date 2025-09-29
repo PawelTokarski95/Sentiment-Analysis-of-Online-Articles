@@ -1,0 +1,24 @@
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
+from sklearn.metrics import f1_score
+
+def load_finbert(articles):
+    model = 'ProsusAI/finbert'
+
+    tokenizer = AutoTokenizer.from_pretrained(model)
+    finbert = AutoModelForSequenceClassification.from_pretrained(model)
+
+    finbert = pipeline(
+        'sentiment-analysis',
+        model=finbert,
+        tokenizer=tokenizer
+
+    )
+
+    results = finbert(articles)
+
+    scores = [line['score'] for line in results]
+    labels = [line['label'] for line in results]
+
+    return scores, labels
+
+
